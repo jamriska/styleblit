@@ -2,7 +2,11 @@
 // recognized, you are granted a perpetual, irrevocable license to copy
 // and modify this file as you see fit.
 
+#ifdef __APPLE__
+#include <OpenGL/gl3.h>
+#else
 #include <GL/glew.h>
+#endif
 
 #include "styleblit.h"
 

@@ -6,7 +6,14 @@
 #include "emscripten.h"
 #endif
 
+#ifdef __APPLE__
+#include <OpenGL/gl3.h>
+#define GLFW_INCLUDE_GL3
+#define GLFW_NO_GLU 
+#else
 #include <GL/glew.h>
+#endif
+
 #include <GLFW/glfw3.h>
 
 #include "styleblit.h"
@@ -52,21 +59,7 @@ int numModelVerts = 0;
 
 GLuint progDrawNormals = 0;
 
-std::vector<std::string> styles =
-{
-  "0.png",
-  "01c.png",
-  "03b.png",
-  "05.png",
-  "10b.png",
-  "12b.png",
-  "15.png",
-  "new10.png",
-  "new11.png",
-  "new12.png",
-  "new15.png",
-  "new16.png"
-};
+std::vector<std::string> styles;
 
 std::vector<GLuint> texStyleIcons;
 
@@ -517,11 +510,21 @@ static void drawRectTex(const glm::mat4& matrix,float x0,float y0,float x1,float
     texcoordLocation = glGetAttribLocation(prog,"texCoord_in");
   }
 
-  std::vector<glm::vec2> vertices = { {x0,y0},{x1,y0},{x1,y1},
-                                      {x1,y1},{x0,y1},{x0,y0} };
+  std::vector<glm::vec2> vertices(6);
+  vertices[0] = glm::vec2(x0,y0);
+  vertices[1] = glm::vec2(x1,y0);
+  vertices[2] = glm::vec2(x1,y1);
+  vertices[3] = glm::vec2(x1,y1);
+  vertices[4] = glm::vec2(x0,y1);
+  vertices[5] = glm::vec2(x0,y0);
   
-  std::vector<glm::vec2> texcoords = { {0,1},{1,1},{1,0},
-                                       {1,0},{0,0},{0,1} };
+  std::vector<glm::vec2> texcoords(6);
+  texcoords[0] = glm::vec2(0,1);
+  texcoords[1] = glm::vec2(1,1);
+  texcoords[2] = glm::vec2(1,0);
+  texcoords[3] = glm::vec2(1,0);
+  texcoords[4] = glm::vec2(0,0);
+  texcoords[5] = glm::vec2(0,1);
 
   static GLuint vbo = 0;
   static GLuint tbo = 0;
@@ -717,6 +720,19 @@ int main(int argc,char* args[])
   printf("Left arrow   - decrease blending radius \n");
   printf("Right arrow  - increase blending radius \n");
  
+  styles.push_back("0.png");
+  styles.push_back("01c.png");
+  styles.push_back("03b.png");
+  styles.push_back("05.png");
+  styles.push_back("10b.png");
+  styles.push_back("12b.png");
+  styles.push_back("15.png");
+  styles.push_back("new10.png");
+  styles.push_back("new11.png");
+  styles.push_back("new12.png");
+  styles.push_back("new15.png");
+  styles.push_back("new16.png");
+
   if (!glfwInit()) { return -1; }
 
   window = glfwCreateWindow(640,700,"StyleBlit",NULL,NULL);
@@ -730,8 +746,10 @@ int main(int argc,char* args[])
   
   glfwGetFramebufferSize(window,&windowWidth,&windowHeight);
   
+  #ifdef __APPLE__
   glewInit();
-
+  #endif
+  
   glGenFramebuffers(1,&fbo);
   glGenRenderbuffers(1,&depthBuffer);
 
