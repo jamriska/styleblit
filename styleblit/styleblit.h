@@ -5,10 +5,10 @@
 #ifndef STYLEBLIT_H_
 #define STYLEBLIT_H_
 
-#if defined(__APPLE__)
+#ifdef __APPLE__
 #include <OpenGL/gl3.h>
 #else
-#include <GL/gl.h>
+#include <GL/glew.h>
 #endif
 
 void styleblit(int    targetWidth,
