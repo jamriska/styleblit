@@ -133,8 +133,15 @@ static void drawFullscreenTriangle(GLint positionLocation)
     glEnableVertexAttribArray(positionLocation);
   }
 
-  glBindVertexArray(vao);
+  glBindVertexArray(vao); 
+  glBindBuffer(GL_ARRAY_BUFFER,vbo);
+  glVertexAttribPointer(positionLocation,3,GL_FLOAT,GL_FALSE,0,0);
+  glEnableVertexAttribArray(positionLocation);
   glDrawArrays(GL_TRIANGLES,0,3);
+  glDisableVertexAttribArray(positionLocation);
+
+  glBindVertexArray(0);
+  glBindBuffer(GL_ARRAY_BUFFER,0);
 }
 
 void styleblit(int targetWidth,
