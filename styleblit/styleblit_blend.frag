@@ -41,5 +41,6 @@ void main()
       }
     }
   }
+  
   gl_FragColor = (sumWeight>0.0) ? sumColor/sumWeight : texture2D(sourceStyle,vec2(0.0,0.0));
 }
