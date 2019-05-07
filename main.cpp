@@ -8,12 +8,11 @@
 
 #ifdef __APPLE__
 #include <OpenGL/gl3.h>
-#define GLFW_INCLUDE_GL3
-#define GLFW_NO_GLU 
 #else
 #include <GL/glew.h>
 #endif
 
+#define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
 #include "styleblit.h"
@@ -753,7 +752,7 @@ int main(int argc,char* args[])
   
   glfwGetFramebufferSize(window,&windowWidth,&windowHeight);
   
-#ifdef __APPLE__
+#ifndef __APPLE__
   glewInit();
 #endif
   
